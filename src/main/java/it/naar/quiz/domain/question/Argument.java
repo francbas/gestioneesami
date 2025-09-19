@@ -1,8 +1,8 @@
 package it.naar.quiz.domain.question;
 
-public class Argomento extends AbstractArgomento {
+public class Argument extends AbstractArgument {
     @Override
-    public ArgomentoAta getAtaChapter() {
+    public ArgumentAta getAtaChapter() {
         return null;
     }
 

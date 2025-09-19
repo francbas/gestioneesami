@@ -5,17 +5,17 @@ package it.naar.quiz.domain.question;
  * Include un'enumerazione Livello che definisce tre diversi gradi di competenza.
  */
 public class AtaLevel {
-    enum Livello {
+    enum Level {
         L1(1, "Livello 1: Consapevolezza e familiarità di base con l'argomento."),
         L2(2, "Livello 2: Conoscenza generale e comprensione degli aspetti teorici e pratici della materia."),
         L3(3, "Livello 3: Conoscenza dettagliata, compresi i fondamenti teorici, le interrelazioni con altre materie e la capacità di combinare e applicare le conoscenze in modo completo.");
 
-        private final int ordine;
-        private final String descrizione;
+        private final int orderIndex;
+        private final String description;
 
-        Livello(int ordine, String descrizione) {
-            this.ordine = ordine;
-            this.descrizione = descrizione;
+        Level(int orderIndex, String description) {
+            this.orderIndex = orderIndex;
+            this.description = description;
         }
 
         /**
@@ -23,8 +23,8 @@ public class AtaLevel {
          *
          * @return l'ordine del livello come intero.
          */
-        public int getOrdine() {
-            return ordine;
+        public int getOrderIndex() {
+            return orderIndex;
         }
 
         /**
@@ -32,8 +32,8 @@ public class AtaLevel {
          *
          * @return la descrizione del livello come stringa.
          */
-        public String getDescrizione() {
-            return descrizione;
+        public String getDescription() {
+            return description;
         }
     }
 }

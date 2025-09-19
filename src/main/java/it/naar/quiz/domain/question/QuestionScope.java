@@ -1,28 +1,30 @@
 package it.naar.quiz.domain.question;
 
+import it.naar.quiz.domain.quiz.QuizUse;
+
 import java.util.List;
 
 public class QuestionScope {
-    List<QuizFinalita> finalitas;
-    public List<QuizFinalita> getFinalitas() {
-        return finalitas;
+    List<QuizUse> quizUses;
+    public List<QuizUse> getQuizUses() {
+        return quizUses;
     }
-    public void setFinalitas(List<QuizFinalita> finalitas) {
-        this.finalitas = finalitas;
+    public void setQuizUses(List<QuizUse> quizUses) {
+        this.quizUses = quizUses;
     }
     public QuestionScope() {}
 
-    public void addFinalita(QuizFinalita finalita)
+    public void addUse(QuizUse use)
     {
-        this.finalitas.add(finalita);
+        this.quizUses.add(use);
     }
 
-    public void removeFinalita(QuizFinalita finalita)
+    public void removeUse(QuizUse use)
     {
-        this.finalitas.remove(finalita);
+        this.quizUses.remove(use);
     }
 
-    public void allFinalitas()
+    public void allUses()
     {}
 
 }

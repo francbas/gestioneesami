@@ -1,0 +1,105 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+'top to bottom direction
+left to right direction
+
+
+package "domain"{
+
+package "domande" as PkgDomande {
+  abstract class AbstractArgomento
+  abstract class AbstractQuestion
+  class QuestionGenerica
+  class QuestionAta
+  class QuestionScope
+  class Argomento
+  class ArgomentoAta
+  class AtaLevel
+
+  AbstractQuestion <|-- QuestionGenerica
+  AbstractQuestion <|-- QuestionAta
+  AbstractArgomento <|-- Argomento
+  AbstractArgomento <|-- ArgomentoAta
+
+  QuestionScope "*" --* "1" AbstractQuestion : has <
+  QuestionAta "1" o-- "*" AtaLevel : has >
+  QuestionScope "*" o- "*" QuizFinalita : apply to >
+  AbstractQuestion "*" *-- "1" AbstractArgomento : covers >
+  }
+package "quiz" as PkgQuiz {
+  class Quiz
+  class QuizFinalita
+  AbstractBrevetto "*" --o "*" QuestionScope : apply to <
+
+  Quiz "*" *-- "*" AbstractQuestion : contains >
+  Quiz "*" *- "1" QuizFinalita : has >
+  }
+
+package "brevetti" as PkgBrevetti {
+  abstract class AbstractBrevetto
+  class BrevettoPil
+  class BrevettoEFV
+
+  AbstractBrevetto <|-- BrevettoEFV
+  AbstractBrevetto <|-- BrevettoPil
+  }
+
+package "scelta" as PkgScelta {
+    class AbstractScelta{
+        +id: UUID
+        +testo: text
+        }
+    class SceltaMultipla{
+        +esatta: boolean
+    }
+    class SceltaTesto{
+        +maxchar: int
+    }
+    class SceltaOption {
+        +add(): AbstractScelta
+    }
+  SceltaMultipla --|> AbstractScelta
+  SceltaTesto --|> AbstractScelta
+  SceltaOption --|> AbstractScelta
+
+  SceltaOption "*" *-- "1" AbstractScelta
+  AbstractScelta "1" ---* "1" AbstractQuestion : risposta da <
+'  OptionManager -[hidden]down-- ScoringPolicy
+'  OptionManager -[hidden]down-- ShufflePolicy
+  }
+  package "manager" as PkgManager {
+    class SceltaManager{
+      -scelte: List<AbstractScelta>
+      -shuffle: ShufflePolicy
+      -scoring: ScoringPolicy
+      +scelte(): List<AbstractScelta>
+      +score(selected: Scelta): int
+    }
+      interface ShufflePolicy {
+            +apply(list: List): List
+            }
+      interface ScoringPolicy {
+            +score(q: Question, selected: AbstractScelta): int
+            }
+  SceltaManager --> ShufflePolicy: uses >
+  SceltaManager --> ScoringPolicy: uses >
+  SceltaManager "1" --> "1" AbstractQuestion: gestisce >
+  SceltaManager "1" --> "2..*" AbstractScelta: gestisce >
+  SceltaManager -[hidden]up- AbstractScelta
+      }
+}
+'together {
+'  PkgDomande -[hidden]- PkgRisposta
+'  PkgBrevetti -[hidden]-- PkgRisposta
+'  PkgRisposta -[hidden]- PkgQuiz
+'  }
+
+note left of SceltaManager
+  Invarianti di dominio:
+  - Almeno 2 Scelte
+  - Esattamente 1 scelta con esatta = true
+  - Shuffle delegato a ShufflePolicy (seed opzionale)
+  - Punteggio delegato a ScoringPolicy
+end note
+@enduml

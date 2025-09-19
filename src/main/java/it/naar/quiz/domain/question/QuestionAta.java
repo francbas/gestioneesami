@@ -1,14 +1,14 @@
 package it.naar.quiz.domain.question;
 
-public class QuestionAta {
-    ArgomentoAta argomentoAta;
+public class QuestionAta extends AbstractQuestion {
+    ArgumentAta ataArgument;
 
 
-    public ArgomentoAta getAtaChapter() {
-        return argomentoAta;
+    public ArgumentAta getAtaChapter() {
+        return ataArgument;
     }
 
-    public void setAtaChapter(ArgomentoAta argomentoAta) {
-        this.argomentoAta = argomentoAta;
+    public void setAtaChapter(ArgumentAta argomentoAta) {
+        this.ataArgument = argomentoAta;
     }
 }

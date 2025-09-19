@@ -1,0 +1,156 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+top to bottom direction
+
+' ======================
+'  PACKAGE DOMANDE
+' ======================
+package "domande" as PkgDomande {
+  abstract class AbstractArgomento {
+    +id: UUID
+    +nome: String
+    +descrizione: String
+  }
+
+  class Argomento extends AbstractArgomento
+  class ArgomentoAta extends AbstractArgomento
+
+  enum AtaLevel {
+    L1
+    L2
+    L3
+  }
+
+  abstract class AbstractQuestion {
+    +id: UUID
+    +testo: String
+    +orderIndex: int
+  }
+
+  class QuestionGenerica extends AbstractQuestion
+  class QuestionAta extends AbstractQuestion
+  class QuestionScope {
+    +id: UUID
+    +note: String
+  }
+
+  ' relazioni principali
+  AbstractQuestion "1" --> "1" AbstractArgomento : covers >
+  QuestionAta "1" --> "1" AtaLevel : level >
+  QuestionScope "*" --* "1" AbstractQuestion : has <
+}
+
+' ======================
+'  PACKAGE SCELTA – COMPOSITE (foglia unica)
+' ======================
+package "scelta" as PkgScelta {
+  abstract class Scelta {
+    +id: UUID
+    +testo: String
+    +orderIndex: int
+  }
+
+  class SceltaAtom extends Scelta
+
+  class OptionsGroup extends Scelta {
+    +id: UUID
+    +label: String
+    +orderIndex: int
+    +shuffleEnabled: boolean
+    +scoringMode: String
+    +correctChoiceId: UUID
+    +isDefault: boolean
+  }
+
+  ' Il composite compone le foglie (profondità massima = 1)
+  OptionsGroup "1" *-- "1..*" SceltaAtom : children >
+
+  ' Coerenza di appartenenza alla domanda
+  'OptionsGroup "1" --> "1" PkgDomande.AbstractQuestion : of question >
+  Scelta "*" --> "1" PkgDomande.AbstractQuestion : question >
+  SceltaAtom "*" --> "1" OptionsGroup : inGroup >
+}
+
+' ======================
+'  PACKAGE QUIZ (selezione group per domanda)
+' ======================
+package "quiz" as PkgQuiz {
+  class Quiz {
+    +id: UUID
+    +titolo: String
+    +dataCreazione: DateTime
+  }
+
+  class QuizFinalita {
+    +id: UUID
+    +nome: String
+  }
+
+  class QuizQuestionConfig {
+    +quizId: UUID
+    +questionId: UUID
+    +selectedGroupId: UUID
+    +handlingKey: String
+    +shuffleOverride: Boolean
+    +scoringModeOverride: String
+  }
+
+  Quiz "1" *-- "*" PkgDomande.AbstractQuestion : contains >
+  Quiz "1" --> "1" QuizFinalita : has >
+
+  QuizQuestionConfig "*" --> "1" Quiz : of quiz >
+  QuizQuestionConfig "*" --> "1" PkgDomande.AbstractQuestion : of question >
+  QuizQuestionConfig "*" --> "1" PkgScelta.OptionsGroup : selected group >
+}
+
+' ======================
+'  PACKAGE BREVETTI (invariato)
+' ======================
+package "brevetti" as PkgBrevetti {
+  abstract class AbstractBrevetto {
+    +id: UUID
+    +nome: String
+  }
+  class BrevettoPil extends AbstractBrevetto
+  class BrevettoEFV extends AbstractBrevetto
+
+  AbstractBrevetto "*" o-- "*" PkgDomande.QuestionScope : apply to <
+}
+
+' ======================
+'  NOTE DI DOMINIO
+' ======================
+note top of PkgScelta
+  COMPOSITE (puro):
+  - Component: Scelta
+  - Composite: OptionsGroup → compone 1..* SceltaAtom
+  - Leaf: SceltaAtom
+  VINCOLI PER GRUPPO (deduzione tipo per il renderer):
+  - OPEN → children == 1 e correctChoiceId = NULL
+  - YES/NO → children == 2 e correctChoiceId ∈ children
+  - MCQ → children > 2 e correctChoiceId ∈ children
+  COERENZA FK:
+  - Ogni Scelta/OptionsGroup deve riferire la stessa AbstractQuestion
+  ORDINAMENTO:
+  - orderIndex unico per (questionId, groupId) e/o per (questionId) a seconda del contesto di render
+  DEFAULT:
+  - OptionsGroup.isDefault = true per selezione automatica se l'Istruttore non customizza
+end note
+
+note bottom of PkgQuiz
+  QuizQuestionConfig (config per-quiz-per-domanda):
+  - collega quiz + question + selectedGroupId
+  - opzionale handlingKey/override; non modifica il dominio della domanda
+  Regola: selectedGroupId deve appartenere alla stessa questionId
+end note
+
+note bottom of PkgDomande
+  Aggregate boundary:
+  - AbstractQuestion come Aggregate Root
+  - OptionsGroup e Scelta come entità interne al confine di consistenza
+  (le FK esistono per referenzialità, ma le regole si applicano entro l'aggregate)
+end note
+
+@enduml
+```
