@@ -1,4 +1,4 @@
-package it.naar.quiz.common;
+package it.naar.quiz.domain.shared;
 
 import java.util.UUID;
 

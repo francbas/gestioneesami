@@ -1,5 +1,6 @@
 package it.naar.quiz.domain.question;
 
+import it.naar.quiz.domain.model.question.AtaLevel;
 import org.junit.jupiter.api.Test;
 import testutil.logging.Loggable;
 
@@ -17,9 +18,9 @@ class LivelloTest implements Loggable {
     void testGetOrdineForL1() {
         // Test for level L1
         AtaLevel.Level livello = AtaLevel.Level.L1;
-        int ordine = livello.getOrderIndex();
-//        logger().log(Level.INFO, "\nTest result for L1: {0},\n{1}", new String[]{String.valueOf(ordine), livello.getDescrizione()});
-        assertEquals(1, ordine, "The ordine for L1 should be 1.");
+        //        logger().log(Level.INFO, "\nTest result for L1: {0},\n{1}", new String[]{String.valueOf(ordine), livello.getDescrizione()});
+        assertEquals(1, livello.getOrderIndex(), "The ordine for L1 should be 1.");
+        assertEquals("Livello 1: Consapevolezza e familiarità di base con l'argomento.", livello.getDescription(), "The ordine for L1 should be 1.");
 
         logger().log(java.util.logging.Level.INFO, "Expected result: {0}", livello);
         logger().log(java.util.logging.Level.INFO, "Expected result: {0}", livello.getOrderIndex());

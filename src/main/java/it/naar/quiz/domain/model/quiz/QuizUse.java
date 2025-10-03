@@ -1,4 +1,4 @@
-package it.naar.quiz.domain.quiz;
+package it.naar.quiz.domain.model.quiz;
 
 public class QuizUse {
     int id;

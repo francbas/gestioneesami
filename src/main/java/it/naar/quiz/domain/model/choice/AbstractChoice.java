@@ -1,7 +1,7 @@
-package it.naar.quiz.domain.choice;
+package it.naar.quiz.domain.model.choice;
 
-import it.naar.quiz.common.BaseEntitySupportUUID;
-import it.naar.quiz.domain.question.AbstractQuestion;
+import it.naar.quiz.domain.shared.BaseEntitySupportUUID;
+import it.naar.quiz.domain.model.question.AbstractQuestion;
 
 //@Entity
 //@Table(name = "quuestion_choice", uniqueConstraints = @jakarta.persistence.UniqueConstraint(columnNames = "public_uuid"))

@@ -1,6 +1,6 @@
-package it.naar.quiz.domain.question;
+package it.naar.quiz.domain.model.question;
 
-import it.naar.quiz.domain.quiz.QuizUse;
+import it.naar.quiz.domain.model.quiz.QuizUse;
 
 import java.util.List;
 

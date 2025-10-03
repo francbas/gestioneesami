@@ -1,7 +1,7 @@
-package it.naar.quiz.domain.question;
+package it.naar.quiz.domain.model.question;
 
-import it.naar.quiz.common.BaseEntitySupportUUID;
-import it.naar.quiz.domain.choice.AbstractChoice;
+import it.naar.quiz.domain.shared.BaseEntitySupportUUID;
+import it.naar.quiz.domain.model.choice.AbstractChoice;
 
 import java.util.List;
 

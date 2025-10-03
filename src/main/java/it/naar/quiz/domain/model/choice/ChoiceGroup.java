@@ -1,4 +1,4 @@
-package it.naar.quiz.domain.choice;
+package it.naar.quiz.domain.model.choice;
 
 import java.util.List;
 

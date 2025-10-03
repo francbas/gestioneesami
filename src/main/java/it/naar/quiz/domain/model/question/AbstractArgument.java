@@ -1,4 +1,4 @@
-package it.naar.quiz.domain.question;
+package it.naar.quiz.domain.model.question;
 
 public abstract class AbstractArgument {
     private int id;
@@ -13,7 +13,7 @@ public abstract class AbstractArgument {
         this.description = description;
     }
 
-    public int getId() {
+    public int getMockId() {
         return id;
     }
 

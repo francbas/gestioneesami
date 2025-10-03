@@ -1,11 +1,11 @@
-package it.naar.quiz.domain.question;
+package it.naar.quiz.domain.model.question;
 
 /**
  * La classe AtaLevel rappresenta un livello di conoscenza relativo ad un argomento specifico.
  * Include un'enumerazione Livello che definisce tre diversi gradi di competenza.
  */
 public class AtaLevel {
-    enum Level {
+    public enum Level {
         L1(1, "Livello 1: Consapevolezza e familiarità di base con l'argomento."),
         L2(2, "Livello 2: Conoscenza generale e comprensione degli aspetti teorici e pratici della materia."),
         L3(3, "Livello 3: Conoscenza dettagliata, compresi i fondamenti teorici, le interrelazioni con altre materie e la capacità di combinare e applicare le conoscenze in modo completo.");

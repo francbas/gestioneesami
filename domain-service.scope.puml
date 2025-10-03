@@ -1,0 +1,39 @@
+@startuml
+left to right direction
+skinparam classAttributeIconSize 0
+
+package "it.naar.quiz.services" {
+  interface RandomizationPolicy {
+  +seleziona(pool: List<Question>, spec: SelectionSpec): List<Question>
+  }
+
+  interface QuotaStrategy {
+  +targets(num: int, quote: List<Quota>): Map<Categoria, Integer>
+  }
+
+  interface PoolIndexer {
+  +index(pool: List<Question>): PoolIndex
+  }
+  class PoolIndex {
+  +bySub: Map<SubCategoria, List<Question>>
+  +byAta: Map<AtaChapter, List<Question>>
+  }
+
+  interface CandidatePicker {
+  +pick(index: PoolIndex, cat: Categoria, k: int, already: Set<Question>, rnd: Random): List<Question>
+  }
+  interface ResidueFiller {
+  +fill(pool: List<Question>, already: Set<Question>, need: int, rnd: Random): List<Question>
+  }
+  interface RandomProvider {
+  +rng(seed: long): Random
+  }
+
+  class PipelineRandomizationPolicy implements RandomizationPolicy
+  class LargestRemainderQuotaStrategy implements QuotaStrategy
+  class DefaultPoolIndexer implements PoolIndexer
+  class DefaultCandidatePicker implements CandidatePicker
+  class DefaultResidueFiller implements ResidueFiller
+  class JdkRandomProvider implements RandomProvider
+}
+@enduml

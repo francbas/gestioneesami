@@ -1,6 +1,4 @@
-package it.naar.quiz.common;
-
-import java.util.UUID;
+package it.naar.quiz.domain.shared;
 
 //@MappedSuperclass
 public abstract class BaseEntitySupport {
